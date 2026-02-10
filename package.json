@@ -1,0 +1,31 @@
+{
+  "name": "esc-fileuploading",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+   "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.550.0",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamleshkumarraj/ecs-fileuploading.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kamleshkumarraj/ecs-fileuploading/issues"
+  },
+  "homepage": "https://github.com/kamleshkumarraj/ecs-fileuploading#readme"
+}
