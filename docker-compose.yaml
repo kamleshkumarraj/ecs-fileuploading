@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  file-upload-app:
+    image: file-upload-app:latest
+    container_name: file-upload-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - AWS_REGION=ap-south-1
+    volumes:
+      - ./uploads:/app/uploads
+    restart: always
