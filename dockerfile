@@ -4,31 +4,28 @@
 FROM node:18-alpine AS deps
 
 WORKDIR /app
-
 COPY package*.json ./
 RUN npm ci --only=production
 
 # ===============================
 # Stage 2: Runtime
 # ===============================
-FROM node:18-alpine AS runner
+FROM node:18-alpine
 
 WORKDIR /app
 
-# 1️⃣ Create user FIRST (as root)
+# Create user
 RUN addgroup -S nodegroup && adduser -S nodeuser -G nodegroup
 
-# 2️⃣ Copy dependencies
+# Copy deps and app
 COPY --from=deps /app/node_modules ./node_modules
-
-# 3️⃣ Copy app source (still root)
 COPY . .
 
-# 4️⃣ Create uploads directory AND fix ownership (as root)
+# Create uploads dir + give FULL ACCESS
 RUN mkdir -p /app/uploads \
-    && chown -R nodeuser:nodegroup /app
+    && chmod -R 777 /app/uploads
 
-# 5️⃣ Switch to non-root user (LAST STEP)
+# Switch user
 USER nodeuser
 
 EXPOSE 3000
