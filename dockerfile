@@ -1,32 +1,21 @@
 # ===============================
-# Stage 1: Dependencies
-# ===============================
-FROM node:18-alpine AS deps
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-
-# ===============================
-# Stage 2: Runtime
+# Single-stage, ROOT container
 # ===============================
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Create user
-RUN addgroup -S nodegroup && adduser -S nodeuser -G nodegroup
+# Copy package files first
+COPY package*.json ./
+RUN npm install --production
 
-# Copy deps and app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy app source
 COPY . .
 
-# Create uploads dir + give FULL ACCESS
-RUN mkdir -p /app/uploads \
-    && chmod -R 777 /app/uploads
-
-# Switch user
-USER nodeuser
+# Create uploads dir with FULL access
+RUN mkdir -p /app/uploads && chmod -R 777 /app/uploads
 
 EXPOSE 3000
+
+# RUN AS ROOT (default)
 CMD ["node", "app.js"]
